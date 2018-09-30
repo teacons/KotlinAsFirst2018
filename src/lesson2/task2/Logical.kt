@@ -2,6 +2,7 @@
 package lesson2.task2
 
 import lesson1.task1.sqr
+import kotlin.math.sqrt
 
 /**
  * Пример
@@ -17,7 +18,10 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Четырехзначное число назовем счастливым, если сумма первых двух ее цифр равна сумме двух последних.
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
-fun isNumberHappy(number: Int): Boolean = TODO()
+fun isNumberHappy(number: Int): Boolean = when {
+    number / 1000 + number / 100 % 10 == number / 10 % 10 + number % 10 -> true
+    else -> false
+}
 
 /**
  * Простая
@@ -35,7 +39,14 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean = TODO()
  * Дан номер месяца (от 1 до 12 включительно) и год (положительный).
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
-fun daysInMonth(month: Int, year: Int): Int = TODO()
+fun daysInMonth(month: Int, year: Int): Int = when {
+    year % 400 == 0 || (year % 4 == 0 && year % 100 != 0) && month == 2 -> 29
+    month == 2 -> 28
+    month % 2 == 0 && month < 8 -> 30
+    month % 2 == 1 && month < 8 -> 31
+    month % 2 == 0 && month >= 8 -> 31
+    else -> 30
+}
 
 /**
  * Средняя
@@ -45,7 +56,10 @@ fun daysInMonth(month: Int, year: Int): Int = TODO()
  * Вернуть true, если утверждение верно
  */
 fun circleInside(x1: Double, y1: Double, r1: Double,
-                 x2: Double, y2: Double, r2: Double): Boolean = TODO()
+                 x2: Double, y2: Double, r2: Double): Boolean = when {
+    sqrt(sqr(x2 - x1) + sqr(y2 - y1)) <= r2 - r1 -> true
+    else -> false
+}
 
 /**
  * Средняя
@@ -56,4 +70,7 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean = TODO()
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean = when {
+    a <= r && b <= c || a <= s && b <= r || a <= r && c <= s || a <= s && c <= r || b <= s && c <= r || b <= r && b <= s -> true
+    else -> false
+}

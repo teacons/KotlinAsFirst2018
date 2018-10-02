@@ -2,6 +2,8 @@
 package lesson2.task2
 
 import lesson1.task1.sqr
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.sqrt
 
 /**
@@ -18,10 +20,7 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Четырехзначное число назовем счастливым, если сумма первых двух ее цифр равна сумме двух последних.
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
-fun isNumberHappy(number: Int): Boolean = when {
-    number / 1000 + number / 100 % 10 == number / 10 % 10 + number % 10 -> true
-    else -> false
-}
+fun isNumberHappy(number: Int): Boolean = number / 1000 + number / 100 % 10 == number / 10 % 10 + number % 10
 
 /**
  * Простая
@@ -56,11 +55,7 @@ fun daysInMonth(month: Int, year: Int): Int = when {
  * Вернуть true, если утверждение верно
  */
 fun circleInside(x1: Double, y1: Double, r1: Double,
-                 x2: Double, y2: Double, r2: Double): Boolean = when {
-    sqrt(sqr(x2 - x1) + sqr(y2 - y1)) <= r2 - r1 -> true
-    else -> false
-}
-
+                 x2: Double, y2: Double, r2: Double): Boolean = sqrt(sqr(x2 - x1) + sqr(y2 - y1)) <= r2 - r1
 /**
  * Средняя
  *
@@ -70,8 +65,5 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт.
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean = when {
-    (a <= r && b <= s) || (a <= s && b <= r) || (a <= r && c <= s)
-            || (a <= s && c <= r) || (b <= s && c <= r) || (b <= r && c <= s) -> true
-    else -> false
-}
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean = min(min(a, b), c) <= min(s, r) &&
+        a + b + c - min(min(a, b), c) - max(max(a, b), c) <= max(s, r)

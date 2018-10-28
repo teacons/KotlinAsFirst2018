@@ -286,6 +286,7 @@ fun russian(n: Int): String {
         (n5 * 10 + n4) in 10..19 -> {
             n5 = n5 * 10 + n4
             n5Str = dict[n5].toString() + " "
+            n4 = 0
         }
         n5 == 4 -> n5Str = "сорок "
         n5 in 2..3 -> n5Str = dict[n5] + "дцать "
@@ -310,6 +311,7 @@ fun russian(n: Int): String {
         (n2 * 10 + n1) in 10..19 -> {
             n2 = n2 * 10 + n1
             n2Str = dict[n2].toString() + ' '
+            n1 = 0
         }
         n2 == 4 -> n2Str = "сорок "
         n2 in 2..3 -> n2Str = dict[n2] + "дцать "

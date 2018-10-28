@@ -287,14 +287,14 @@ fun russian(n: Int): String {
             n5 = n5 * 10 + n4
             n5Str = dict[n5].toString() + " "
         }
-        (n5 * 10 + n4) == 40 -> n5Str = "сорок "
+        n5 == 4 -> n5Str = "сорок "
         n5 in 2..3 -> n5Str = dict[n5] + "дцать "
         n5 in 5..8 -> n5Str = dict[n5] + "десят "
         n5 == 9 -> n5Str = "девяносто "
         else -> n5Str = ""
     }
     when {
-        (n5 in 10..19) or (n5 * 10 + n4 == 40) -> n4Str = ""
+        n5 in 10..19 -> n4Str = ""
         n4 == 1 -> n4Str = "одна "
         n4 == 2 -> n4Str = "две "
         n4 in 3..9 -> n4Str = dict[n4].toString() + " "
@@ -311,14 +311,14 @@ fun russian(n: Int): String {
             n2 = n2 * 10 + n1
             n2Str = dict[n2].toString() + ' '
         }
-        (n2 * 10 + n1) == 40 -> n2Str = "сорок "
+        n2 == 4 -> n2Str = "сорок "
         n2 in 2..3 -> n2Str = dict[n2] + "дцать "
         n2 in 5..8 -> n2Str = dict[n2] + "десят "
         n2 == 9 -> n2Str = "девяносто "
         else -> n2Str = ""
     }
     when {
-        (n2 in 10..19) or ((n2 * 10 + n1) == 40) -> n1Str = ""
+        n2 in 10..19 -> n1Str = ""
         n1 in 1..9 -> n1Str = dict[n1].toString()
     }
     n123Str = (n3Str + n2Str + n1Str).trim()

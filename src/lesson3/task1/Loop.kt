@@ -1,6 +1,9 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson3.task1
 
+import lesson1.task1.sqr
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
@@ -38,7 +41,7 @@ fun isPrime(n: Int): Boolean {
  */
 fun isPerfect(n: Int): Boolean {
     var sum = 1
-    for (m in 2..n/2) {
+    for (m in 2..n / 2) {
         if (n % m > 0) continue
         sum += m
         if (sum > n) break
@@ -74,7 +77,10 @@ fun digitNumber(n: Int): Int = TODO()
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = TODO()
+fun fib(n: Int): Int {
+    return if (n <= 2) 1
+    else fib(n - 2) + fib(n - 1)
+}
 
 /**
  * Простая
@@ -191,7 +197,33 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var lengthSeq = 0
+    var num = 0
+    var sqrSec = 0
+    var i = 0
+    var a = 0
+    var b = 0
+    while (lengthSeq < n) {
+        i++
+        sqrSec = sqr(i)
+        a = 1
+        b = 10
+        while ((sqrSec / b) != 0) {
+            b *= 10
+            a++
+        }
+        lengthSeq += a
+    }
+    lengthSeq -= a
+    b /= 10
+    while (lengthSeq != n) {
+        num = sqrSec / b % 10
+        b /= 10
+        lengthSeq++
+    }
+    return num
+}
 
 /**
  * Сложная
@@ -202,4 +234,30 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var lengthSeq = 0
+    var numFib = 0
+    var num = 0
+    var i = 0
+    var a = 0
+    var b = 0
+    while (lengthSeq < n) {
+        i++
+        numFib = fib(i)
+        a = 1
+        b = 10
+        while ((numFib / b) != 0) {
+            b *= 10
+            a++
+        }
+        lengthSeq += a
+    }
+    lengthSeq -= a
+    b /= 10
+    while (lengthSeq != n) {
+        num = numFib / b % 10
+        b /= 10
+        lengthSeq++
+    }
+    return num
+}

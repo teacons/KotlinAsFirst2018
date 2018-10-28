@@ -239,4 +239,94 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun russian(n: Int): String {
+    val dict = mapOf(
+            0 to "",
+            1 to "один",
+            2 to "два",
+            3 to "три",
+            4 to "четыре",
+            5 to "пять",
+            6 to "шесть",
+            7 to "семь",
+            8 to "восемь",
+            9 to "девять",
+            10 to "десять",
+            11 to "одиннадцать",
+            12 to "двенадцать",
+            13 to "тринадцать",
+            14 to "четырнадцать",
+            15 to "пятнадцать",
+            16 to "шестнадцать",
+            17 to "семнадцать",
+            18 to "восемнадцать",
+            19 to "девятнадцать"
+    )
+    var n1 = n % 10
+    var n2 = n / 10 % 10
+    var n3 = n / 100 % 10
+    var n4 = n / 1000 % 10
+    var n5 = n / 10000 % 10
+    var n6 = n / 100000
+    var n1Str = ""
+    var n2Str = ""
+    var n3Str = ""
+    var n4Str = ""
+    var n5Str = ""
+    var n6Str = ""
+    var n123Str = ""
+    n6Str = when (n6) {
+        in 5..9 -> dict[n6] + "сот "
+        in 3..4 -> dict[n6] + "ста "
+        1 -> "сто "
+        2 -> "двести "
+        else -> ""
+    }
+    when {
+        (n5 * 10 + n4) in 10..19 -> {
+            n5 = n5 * 10 + n4
+            n5Str = dict[n5].toString() + " "
+        }
+        (n5 * 10 + n4) == 40 -> n5Str = "сорок "
+        n5 in 2..3 -> n5Str = dict[n5] + "дцать "
+        n5 in 5..8 -> n5Str = dict[n5] + "десят "
+        n5 == 9 -> n5Str = "девяносто "
+        else -> n5Str = ""
+    }
+    when {
+        (n5 in 10..19) or (n5 * 10 + n4 == 40) -> n4Str = ""
+        n4 == 1 -> n4Str = "одна "
+        n4 == 2 -> n4Str = "две "
+        n4 in 3..9 -> n4Str = dict[n4].toString() + " "
+    }
+    n3Str = when (n3) {
+        in 5..9 -> dict[n3] + "сот "
+        in 3..4 -> dict[n3] + "ста "
+        1 -> "сто "
+        2 -> "двести "
+        else -> ""
+    }
+    when {
+        (n2 * 10 + n1) in 10..19 -> {
+            n2 = n2 * 10 + n1
+            n2Str = dict[n2].toString() + ' '
+        }
+        (n2 * 10 + n1) == 40 -> n2Str = "сорок "
+        n2 in 2..3 -> n2Str = dict[n2] + "дцать "
+        n2 in 5..8 -> n2Str = dict[n2] + "десят "
+        n2 == 9 -> n2Str = "девяносто "
+        else -> n2Str = ""
+    }
+    when {
+        (n2 in 10..19) or ((n2 * 10 + n1) == 40) -> n1Str = ""
+        n1 in 1..9 -> n1Str = dict[n1].toString()
+    }
+    n123Str = (n3Str + n2Str + n1Str).trim()
+    return when {
+        (n6 + n5 + n4) == 0 -> n123Str
+        n4 == 1 -> "$n6Str$n5Str$n4Str" + "тысяча" + if ((n1 + n2 + n3) != 0) " $n123Str" else ""
+        n4 in 2..4 -> "$n6Str$n5Str$n4Str" + "тысячи" + if ((n1 + n2 + n3) != 0) " $n123Str" else ""
+        (n4 in 5..9) or (n4 == 0) or (n5 in 10..19) -> "$n6Str$n5Str$n4Str" + "тысяч" + if ((n1 + n2 + n3) != 0) " $n123Str" else ""
+        else -> ""
+    }
+}

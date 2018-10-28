@@ -198,31 +198,31 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun squareSequenceDigit(n: Int): Int {
-    var lengthSeq = 0
-    var num = 0
-    var sqrSec = 0
-    var i = 0
-    var a = 0
-    var b = 0
-    while (lengthSeq < n) {
-        i++
+    var lengthSeq = 0.0
+    var num = 0.0
+    var sqrSec = 0.0
+    var i = 0.0
+    var a = 0.0
+    var b = 0.0
+    while (lengthSeq < n.toDouble()) {
+        i += 1.0
         sqrSec = sqr(i)
-        a = 1
-        b = 10
-        while ((sqrSec / b) != 0) {
-            b *= 10
-            a++
+        a = 1.0
+        b = 10.0
+        while ((sqrSec.toInt() / b.toInt()) != 0) {
+            b *= 10.0
+            a += 1.0
         }
         lengthSeq += a
     }
     lengthSeq -= a
-    b /= 10
-    while (lengthSeq != n) {
-        num = sqrSec / b % 10
-        b /= 10
-        lengthSeq++
+    b /= 10.0
+    while (lengthSeq != n.toDouble()) {
+        num = sqrSec / b % 10.0
+        b /= 10.0
+        lengthSeq += 1.0
     }
-    return num
+    return num.toInt()
 }
 
 /**
@@ -235,29 +235,29 @@ fun squareSequenceDigit(n: Int): Int {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun fibSequenceDigit(n: Int): Int {
-    var lengthSeq = 0
-    var numFib = 0
-    var num = 0
-    var i = 0
-    var a = 0
-    var b = 0
-    while (lengthSeq < n) {
-        i++
-        numFib = fib(i)
-        a = 1
-        b = 10
-        while ((numFib / b) != 0) {
-            b *= 10
-            a++
+    var lengthSeq = 0.0
+    var numFib = 0.0
+    var num = 0.0
+    var i = 0.0
+    var a = 0.0
+    var b = 0.0
+    while (lengthSeq < n.toDouble()) {
+        i += 1.0
+        numFib = fib(i.toInt()).toDouble()
+        a = 1.0
+        b = 10.0
+        while ((numFib.toInt() / b.toInt()) != 0) {
+            b *= 10.0
+            a += 1.0
         }
         lengthSeq += a
     }
     lengthSeq -= a
-    b /= 10
-    while (lengthSeq != n) {
-        num = numFib / b % 10
-        b /= 10
-        lengthSeq++
+    b /= 10.0
+    while (lengthSeq != n.toDouble()) {
+        num = numFib / b % 10.0
+        b /= 10.0
+        lengthSeq += 1.0
     }
-    return num
+    return num.toInt()
 }

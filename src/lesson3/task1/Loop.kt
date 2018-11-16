@@ -209,33 +209,7 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int {
-    var lengthSeq = 0.0
-    var num = 0.0
-    var sqrSec = 0.0
-    var i = 0.0
-    var a = 0.0
-    var b = 0.0
-    while (lengthSeq < n.toDouble()) {
-        i += 1.0
-        sqrSec = sqr(i)
-        a = 1.0
-        b = 10.0
-        while ((sqrSec.toInt() / b.toInt()) != 0) {
-            b *= 10.0
-            a += 1.0
-        }
-        lengthSeq += a
-    }
-    lengthSeq -= a
-    b /= 10.0
-    while (lengthSeq != n.toDouble()) {
-        num = sqrSec / b % 10.0
-        b /= 10.0
-        lengthSeq += 1.0
-    }
-    return num.toInt()
-}
+fun squareSequenceDigit(n: Int): Int = seqNum(2, n)
 
 /**
  * Сложная
@@ -246,19 +220,24 @@ fun squareSequenceDigit(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int {
+fun fibSequenceDigit(n: Int): Int = seqNum(1, n)
+
+fun seqNum(seq: Int, n: Int): Int {
     var lengthSeq = 0.0
-    var numFib = 0.0
+    var numSeq = 0.0
     var num = 0.0
     var i = 0.0
     var a = 0.0
     var b = 0.0
     while (lengthSeq < n.toDouble()) {
         i += 1.0
-        numFib = fib(i.toInt()).toDouble()
+        when (seq) {
+            1 -> numSeq = fib(i.toInt()).toDouble()
+            2 -> numSeq = sqr(i)
+        }
         a = 1.0
         b = 10.0
-        while ((numFib.toInt() / b.toInt()) != 0) {
+        while ((numSeq.toInt() / b.toInt()) != 0) {
             b *= 10.0
             a += 1.0
         }
@@ -267,7 +246,7 @@ fun fibSequenceDigit(n: Int): Int {
     lengthSeq -= a
     b /= 10.0
     while (lengthSeq != n.toDouble()) {
-        num = numFib / b % 10.0
+        num = numSeq / b % 10.0
         b /= 10.0
         lengthSeq += 1.0
     }

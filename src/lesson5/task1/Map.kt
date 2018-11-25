@@ -300,7 +300,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
         for ((treas, weightcost) in treasuresCostWeight) {
             when {
                 maxItem == "" -> maxItem = treas
-                (weightcost > treasuresCostWeight[maxItem]!!.toDouble()) and (treasuresEdited[maxItem]!!.first < treasuresEdited[treas]!!.first) -> maxItem = treas
+                (weightcost > treasuresCostWeight[maxItem]!!.toDouble()) and (treasuresEdited[maxItem]!!.first <= treasuresEdited[treas]!!.first) -> maxItem = treas
                 weightcost == treasuresCostWeight[maxItem] -> if (treasuresEdited[treas]!!.first > treasuresEdited[maxItem]!!.first) maxItem = treas
             }
         }

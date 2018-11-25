@@ -272,4 +272,45 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
+    var treasuresEdited = mutableMapOf<String, Pair<Int, Int>>()
+    var treasuresCostWeight = mutableMapOf<String, Int>()
+    var capOut = capacity
+    var maxItem = ""
+    var backpack = mutableSetOf<String>()
+    var max = 0
+    var min: Int
+    var check = 0
+    if (capacity == 0) return emptySet()
+    for ((treas, weight) in treasures) {
+        if (max < weight.first) max = weight.first
+    }
+    min = max
+    for ((treas, weight) in treasures) {
+        if (min > weight.first) min = weight.first
+    }
+    while ((capOut >= min) and (treasures.size != backpack.size) and (check != 1)) {
+        for ((treas, weight) in treasures) {
+            if ((weight.first <= capOut) and (treas !in backpack)) {
+                treasuresCostWeight[treas] = weight.second / weight.first
+                treasuresEdited[treas] = weight
+            }
+        }
+        if (treasuresEdited.isEmpty()) break
+        for ((treas, weightcost) in treasuresCostWeight) {
+            when {
+                maxItem == "" -> maxItem = treas
+                weightcost > treasuresCostWeight[maxItem]!!.toInt() -> maxItem = treas
+                weightcost == treasuresCostWeight[maxItem] -> if (treasuresEdited[treas]!!.first > treasuresEdited[maxItem]!!.first) maxItem = treas
+            }
+        }
+        backpack.add(maxItem)
+        capOut -= treasuresEdited[maxItem]!!.first
+        treasuresEdited.remove(maxItem)
+        if (treasuresEdited.isEmpty()) check = 1
+        treasuresEdited.clear()
+        treasuresCostWeight.clear()
+        maxItem = ""
+    }
+    return backpack
+}

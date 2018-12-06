@@ -2,6 +2,7 @@
 
 package lesson5.task1
 
+import kotlin.math.max
 /**
  * Пример
  *
@@ -273,44 +274,33 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
  *   ) -> emptySet()
  */
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
-    var treasuresEdited = mutableMapOf<String, Pair<Int, Int>>()
-    var treasuresCostWeight = mutableMapOf<String, Double>()
-    var capOut = capacity
-    var maxItem = ""
+    var items = mutableMapOf<Int, String>()
+    var costs = mutableMapOf<Int, Int>()
+    var weights = mutableMapOf<Int, Int>()
     var backpack = mutableSetOf<String>()
-    var max = 0
-    var min: Int
-    var check = 0
-    if (capacity == 0) return emptySet()
-    for ((treas, weight) in treasures) {
-        if (max < weight.first) max = weight.first
+    var a = 1
+    for ((name, weightCost) in treasures) {
+        items[a] = name
+        weights[a] = weightCost.first
+        costs[a] = weightCost.second
+        a++
     }
-    min = max
-    for ((treas, weight) in treasures) {
-        if (min > weight.first) min = weight.first
+    var temp = Array(items.size + 1) {Array(capacity + 1) { 0 } }
+    for (item in 1..items.size) {
+        for (cap in 1..capacity) {
+            if (cap >= weights[item]!!) {
+                temp[item][cap] = max(temp[item - 1][cap], temp[item - 1][cap - weights[item]!!] + costs[item]!!)
+            } else temp[item][cap] = temp[item - 1][cap]
+        }
     }
-    while ((capOut >= min) and (treasures.size != backpack.size) and (check != 1)) {
-        for ((treas, weight) in treasures) {
-            if ((weight.first <= capOut) and (treas !in backpack)) {
-                treasuresCostWeight[treas] = weight.second.toDouble() / weight.first.toDouble()
-                treasuresEdited[treas] = weight
+    fun answer(item: Int, cap: Int) {
+        if (item != 0 && cap != 0) {
+            if (temp[item - 1][cap] == temp[item][cap]) answer(item - 1, cap) else {
+                answer(item - 1, cap)
+                backpack.add(items[item]!!)
             }
         }
-        if (treasuresEdited.isEmpty()) break
-        for ((treas, weightcost) in treasuresCostWeight) {
-            when {
-                maxItem == "" -> maxItem = treas
-                (weightcost > treasuresCostWeight[maxItem]!!.toDouble()) and (treasuresEdited[maxItem]!!.second <= treasuresEdited[treas]!!.second) -> maxItem = treas
-                weightcost == treasuresCostWeight[maxItem] -> if (treasuresEdited[treas]!!.first > treasuresEdited[maxItem]!!.first) maxItem = treas
-            }
-        }
-        backpack.add(maxItem)
-        capOut -= treasuresEdited[maxItem]!!.first
-        treasuresEdited.remove(maxItem)
-        if (treasuresEdited.isEmpty()) check = 1
-        treasuresEdited.clear()
-        treasuresCostWeight.clear()
-        maxItem = ""
     }
+    answer(items.size, capacity)
     return backpack
 }

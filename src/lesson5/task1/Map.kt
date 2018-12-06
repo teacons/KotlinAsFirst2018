@@ -296,7 +296,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
     fun answer(item: Int, cap: Int) {
         if (item != 0 && cap != 0) {
             if (temp[item - 1][cap] == temp[item][cap]) answer(item - 1, cap) else {
-                answer(item - 1, cap)
+                answer(item - 1, cap - weights[item]!!)
                 backpack.add(items[item]!!)
             }
         }

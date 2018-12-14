@@ -274,10 +274,10 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
  *   ) -> emptySet()
  */
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
-    var items = mutableMapOf<Int, String>()
-    var costs = mutableMapOf<Int, Int>()
-    var weights = mutableMapOf<Int, Int>()
-    var backpack = mutableSetOf<String>()
+    val items = mutableMapOf<Int, String>()
+    val costs = mutableMapOf<Int, Int>()
+    val weights = mutableMapOf<Int, Int>()
+    val backpack = mutableSetOf<String>()
     var a = 1
     for ((name, weightCost) in treasures) {
         items[a] = name
@@ -285,7 +285,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
         costs[a] = weightCost.second
         a++
     }
-    var temp = Array(items.size + 1) {Array(capacity + 1) { 0 } }
+    val temp = Array(items.size + 1) {Array(capacity + 1) { 0 } }
     for (item in 1..items.size) {
         for (cap in 1..capacity) {
             if (cap >= weights[item]!!) {

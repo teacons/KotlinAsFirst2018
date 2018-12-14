@@ -207,4 +207,49 @@ fun fromRoman(roman: String): Int = TODO()
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
+    val cellsArray = Array(cells) { 0 }
+    var n = cells / 2
+    var limitEdit = limit
+    var i = 0
+    var a = 0
+    var l = 0
+    var r = 0
+    var temp = 0
+    for (s in commands) {
+        if (s == '[') l++
+        if (s == ']') r++
+    }
+    if (l != r) throw IllegalArgumentException("Нет закрытия цикла")
+    while (i < commands.length && limitEdit != 0) {
+        when (commands[i]) {
+            '>' -> n++
+            '<' -> n--
+            '+' -> cellsArray[n]++
+            '-' -> cellsArray[n]--
+            ' ' -> a++
+            '[' -> if (cellsArray[n] == 0) {
+                temp = 1
+                while (temp > 0) {
+                    i++
+                    if (commands[i] == '[') temp++
+                    else if (commands[i] == ']') temp--
+                }
+            }
+            ']' -> if (cellsArray[n] != 0) {
+                temp = 1
+                while (temp > 0) {
+                    i--
+                    if (commands[i] == ']') temp++
+                    else if (commands[i] == '[') temp--
+                }
+            }
+            else -> throw IllegalArgumentException("Нет такого символа")
+        }
+        i++
+        limitEdit--
+        if ((n > cells) || (n < 0)) throw IllegalStateException("Выход за границу контейнера")
+        if (limitEdit == 0) return cellsArray.toList()
+    }
+    return cellsArray.toList()
+}

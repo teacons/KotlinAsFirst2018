@@ -248,7 +248,7 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
         }
         i++
         limitEdit--
-        if ((n > cells) || (n < 0)) throw IllegalStateException("Выход за границу контейнера")
+        if ((n >= cells) || (n < 0)) throw IllegalStateException("Выход за границу контейнера")
         if (limitEdit == 0) return cellsArray.toList()
     }
     return cellsArray.toList()

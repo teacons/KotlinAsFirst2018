@@ -219,8 +219,9 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     for (s in commands) {
         if (s == '[') l++
         if (s == ']') r++
+        if (r > l) throw IllegalArgumentException()
     }
-    if (l != r) throw IllegalArgumentException("Нет закрытия цикла")
+    if (l != r) throw IllegalArgumentException()
     while (i < commands.length && limitEdit != 0) {
         when (commands[i]) {
             '>' -> n++
@@ -244,11 +245,11 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
                     else if (commands[i] == '[') temp--
                 }
             }
-            else -> throw IllegalArgumentException("Нет такого символа")
+            else -> throw IllegalArgumentException()
         }
         i++
         limitEdit--
-        if ((n >= cells) || (n < 0)) throw IllegalStateException("Выход за границу контейнера")
+        if ((n >= cells) || (n < 0)) throw IllegalStateException()
         if (limitEdit == 0) return cellsArray.toList()
     }
     return cellsArray.toList()

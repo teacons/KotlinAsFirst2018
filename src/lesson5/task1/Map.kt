@@ -285,7 +285,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
         costs[a] = weightCost.second
         a++
     }
-    val temp = Array(items.size + 1) {Array(capacity + 1) { 0 } }
+    val temp = Array(items.size + 1) { Array(capacity + 1) { 0 } }
     for (item in 1..items.size) {
         for (cap in 1..capacity) {
             if (cap >= weights[item]!!) {

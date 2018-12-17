@@ -296,7 +296,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                     i++
                 }
             }
-            if (("~~" in temp1) && (s != x - 1)) {
+            if (("~~" in temp1) && (s * 2 != x - 1)) {
                 if (temp1.indexOf("~~") != temp1.lastIndexOf("~~")) {
                     temp2 = temp1.split("~~").toMutableList()
                     temp2.remove("")

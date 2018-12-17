@@ -262,13 +262,21 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     var i = 0
     var b = 0
     var s = 0
+    var z = 0
+    var x = 0
+    for (line in File(inputName).readLines()) {
+        for (i in line) {
+            if (i == '*') z++
+            if (i == '`') x++
+        }
+    }
     for (line in File(inputName).readLines()) {
         if (line.isEmpty()) writer.write("</p>\n<p>")
         val temp = line.split(' ')
         for (word in temp) {
             var temp1 = word
             var temp2: MutableList<String>
-            if ("**" in temp1) {
+            if (("**" in temp1) && (b + i != z - 2)) {
                 if (temp1.indexOf("**") != temp1.lastIndexOf("**")) {
                     temp2 = temp1.split("**").toMutableList()
                     temp2.remove("")
@@ -278,7 +286,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                     b++
                 }
             }
-            if ("*" in temp1) {
+            if (("*" in temp1) && (b + i != z - 1)) {
                 if (temp1.indexOf("*") != temp1.lastIndexOf("*")) {
                     temp2 = temp1.split('*').toMutableList()
                     temp2.remove("")
@@ -288,7 +296,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                     i++
                 }
             }
-            if ("~~" in temp1) {
+            if (("~~" in temp1) && (s != x - 1)) {
                 if (temp1.indexOf("~~") != temp1.lastIndexOf("~~")) {
                     temp2 = temp1.split("~~").toMutableList()
                     temp2.remove("")

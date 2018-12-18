@@ -258,60 +258,68 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val builder = StringBuilder()
     val writer = File(outputName).bufferedWriter()
+    val text = File(inputName).readLines().toMutableList()
     writer.write("<html>\n<body>\n<p>")
-    var i = 0
-    var b = 0
-    var s = 0
-    var z = 0
-    var x = 0
-    for (line in File(inputName).readLines()) {
-        for (i in line) {
-            if (i == '*') z++
-            if (i == '`') x++
+    var countI = 0
+    var countB = 0
+    var countS = 0
+    var openI = false
+    var openB = false
+    var openS = false
+    var a = 0
+    var temp = ""
+    fun update(char: Char, str: String) {
+        when (char) {
+            'i' -> {
+                openI = !openI
+                countI--
+            }
+            'b' -> {
+                openB = !openB
+                countB--
+            }
+            's' -> {
+                openS = !openS
+                countS--
+            }
+        }
+        temp += str
+    }
+    while (a < text.size) {
+        text[a] = Regex("""\*\*\*""").replace(text[a], "δ*")
+        text[a] = Regex("""\*\*""").replace(text[a], "δ")
+        text[a] = Regex("""~~""").replace(text[a], "α")
+        for (char in text[a]) {
+            when (char) {
+                '*' -> countI++
+                'δ' -> countB++
+                'α' -> countS++
+            }
+        }
+        a++
+    }
+    for (line in text) {
+        if (line.isEmpty()) builder.append("</p>\n<p>") else {
+            for (char in line) {
+                when {
+                    (char == '*') && !openI && countI != 1 -> update('i', "<i>")
+                    (char == '*') && openI -> update('i', "</i>")
+                    (char == 'δ') && !openB && countB != 1 -> update('b', "<b>")
+                    (char == 'δ') && openB -> update('b', "</b>")
+                    (char == 'α') && !openS && countS != 1 -> update('s', "<s>")
+                    (char == 'α') && openS -> update('s', "</s>")
+                    else -> temp += when (char) {
+                        'δ' -> "**"
+                        'α' -> "~~"
+                        else -> char
+                    }
+                }
+            }
+            builder.append(temp + "\n")
+            temp = ""
         }
     }
-    for (line in File(inputName).readLines()) {
-        if (line.isEmpty()) writer.write("</p>\n<p>")
-        val temp = line.split(' ')
-        for (word in temp) {
-            var temp1 = word
-            var temp2: MutableList<String>
-            if (("**" in temp1) && (b + i != z - 2)) {
-                if (temp1.indexOf("**") != temp1.lastIndexOf("**")) {
-                    temp2 = temp1.split("**").toMutableList()
-                    temp2.remove("")
-                    temp1 = "<b>" + temp2[0] + "</b>" + temp2[1]
-                } else {
-                    temp1 = if (b % 2 == 0) temp1.replace("**", "<b>") else temp1.replace("**", "</b>")
-                    b++
-                }
-            }
-            if (("*" in temp1) && (b + i != z - 1)) {
-                if (temp1.indexOf("*") != temp1.lastIndexOf("*")) {
-                    temp2 = temp1.split('*').toMutableList()
-                    temp2.remove("")
-                    temp1 = "<i>" + temp2[0] + "</i>" + temp2[1]
-                } else {
-                    temp1 = if (i % 2 == 0) temp1.replace("*", "<i>") else temp1.replace("*", "</i>")
-                    i++
-                }
-            }
-            if (("~~" in temp1) && (s * 2 != x - 1)) {
-                if (temp1.indexOf("~~") != temp1.lastIndexOf("~~")) {
-                    temp2 = temp1.split("~~").toMutableList()
-                    temp2.remove("")
-                    temp1 = "<s>" + temp2[0] + "</s>" + temp2[1]
-                } else {
-                    temp1 = if (s % 2 == 0) temp1.replace("~~", "<s>") else temp1.replace("~~", "</s>")
-                    s++
-                }
-            }
-            builder.append(temp1)
-        }
-        writer.write(builder.toString() + "\n")
-        builder.setLength(0)
-        print(builder.toString())
-    }
+    writer.write(builder.toString())
     writer.write("</p>\n</body>\n</html>")
     writer.close()
 }

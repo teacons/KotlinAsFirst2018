@@ -263,20 +263,24 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     var countI = 0
     var countB = 0
     var countS = 0
+    var count = 0
     var openI = false
     var openB = false
     var openS = false
     var a = 0
     var temp = ""
+    var last = ""
     fun update(char: Char, str: String) {
         when (char) {
             'i' -> {
                 openI = !openI
                 countI--
+                last = "i"
             }
             'b' -> {
                 openB = !openB
                 countB--
+                last = "b"
             }
             's' -> {
                 openS = !openS
@@ -286,7 +290,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         temp += str
     }
     while (a < text.size) {
-        text[a] = Regex("""\*\*\*""").replace(text[a], "δ*")
+        text[a] = Regex("""\*\*\*""").replace(text[a], "γ")
         text[a] = Regex("""\*\*""").replace(text[a], "δ")
         text[a] = Regex("""~~""").replace(text[a], "α")
         for (char in text[a]) {
@@ -294,6 +298,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                 '*' -> countI++
                 'δ' -> countB++
                 'α' -> countS++
+                'γ' -> count++
             }
         }
         a++
@@ -302,15 +307,35 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         if (line.isEmpty()) builder.append("</p>\n<p>") else {
             for (char in line) {
                 when {
-                    (char == '*') && !openI && countI != 1 -> update('i', "<i>")
+                    (char == '*') && !openI && countI + count != 1 -> update('i', "<i>")
                     (char == '*') && openI -> update('i', "</i>")
-                    (char == 'δ') && !openB && countB != 1 -> update('b', "<b>")
+                    (char == 'δ') && !openB && countB + count != 1 -> update('b', "<b>")
                     (char == 'δ') && openB -> update('b', "</b>")
                     (char == 'α') && !openS && countS != 1 -> update('s', "<s>")
                     (char == 'α') && openS -> update('s', "</s>")
+                    (char == 'γ') && countI + countB != 1 -> {
+                        if (last == "i") {
+                            if (openI && openB) {
+                                update('i', "</i>")
+                                update('b', "</b>")
+                            } else {
+                                update('i', "<i>")
+                                update('b', "<b>")
+                            }
+                        } else {
+                            if (openI && openB) {
+                                update('b', "</b>")
+                                update('i', "</i>")
+                            } else {
+                                update('b', "<b>")
+                                update('i', "<i>")
+                            }
+                        }
+                    }
                     else -> temp += when (char) {
                         'δ' -> "**"
                         'α' -> "~~"
+                        'γ' -> "***"
                         else -> char
                     }
                 }
